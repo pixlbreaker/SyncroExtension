@@ -8,11 +8,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "firebase": "^11.6.1"
   },
   "devDependencies": {
     "typescript": "^5.8.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pixlbreaker/SyncroExtension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pixlbreaker/SyncroExtension/issues"
+  },
+  "homepage": "https://github.com/pixlbreaker/SyncroExtension#readme",
+  "description": ""
 }

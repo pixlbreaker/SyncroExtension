@@ -1,10 +1,11 @@
 {
-    "name": "Syncro Extension",
-    "description": "Plays youtube videos with your friends",
-    "version": "1.0",
     "manifest_version": 3,
+    "name": "YouTube Sync",
+    "version": "1.0",
+    "permissions": [
+        "storage"
+    ],
     "action": {
-        "default_popup": "src/popup.html",
-        "default_icon": "hello.png"
+        "default_popup": "src/popup.html"
     }
 }
