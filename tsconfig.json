@@ -9,6 +9,9 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
+  "types": [
+    "chrome"
+  ],
   "include": [
     "src/**/*"
   ]
