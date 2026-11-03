@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Syncro</title>
+  <style>
+    body { font-family: sans-serif; padding: 10px; color: #333; }
+    #status { margin-bottom: 10px; font-weight: bold; }
+    .controls { display: flex; flex-direction: column; gap: 5px; }
+    button { cursor: pointer; padding: 8px; }
+  </style>
+</head>
+<body>
+  <h3>YouTube Syncro</h3>
+  <div id="status">Not connected</div>
+  <div classtext="controls">
+    <button id="btnConnect">Join/Host Room (use video ID)</button>
+  </div>
+  <script src="src/peerjs.min.js"></script>
+  <script src="src/sidepanel.js"></script>
+</body>
+</html>

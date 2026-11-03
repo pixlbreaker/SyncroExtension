@@ -1,45 +1,36 @@
-import { ref, onValue, set } from "firebase/database";
-import { db } from "./firebase-config";
+// Content script that forwards local video events to the side panel and applies
+// incoming sync commands from peers.
 
-chrome.storage.local.get(["room"], ({ room }) => {
-    if (!room) return;
+const video = document.querySelector('video');
+if (!video) {
+  console.warn('No <video> element found on this page.');
+  throw new Error('Video element not present');
+}
 
-    const video = document.querySelector("video");
-    if (!video) return;
+// Send local actions to the side panel which will broadcast them via PeerJS
+const sendLocalSync = (action: string, time: number) => {
+  chrome.runtime.sendMessage({ type: 'LOCAL_SYNC', data: { action, time } });
+};
 
-    const roomRef = ref(db, `rooms/${room}`);
-    let lastSent = 0;
+video.addEventListener('play', () => sendLocalSync('play', video.currentTime));
+video.addEventListener('pause', () => sendLocalSync('pause', video.currentTime));
+video.addEventListener('seeked', () => sendLocalSync('seek', video.currentTime));
 
-    video.addEventListener("play", () => {
-        set(roomRef, { action: "play", time: video.currentTime });
-    });
-
-    video.addEventListener("pause", () => {
-        set(roomRef, { action: "pause", time: video.currentTime });
-    });
-
-    video.addEventListener("seeked", () => {
-        set(roomRef, { action: "seek", time: video.currentTime });
-    });
-
-    onValue(roomRef, (snapshot) => {
-        const data = snapshot.val();
-        if (!data || Date.now() - lastSent < 500) return;
-
-        switch (data.action) {
-            case "play":
-                video.currentTime = data.time;
-                video.play();
-                break;
-            case "pause":
-                video.pause();
-                video.currentTime = data.time;
-                break;
-            case "seek":
-                video.currentTime = data.time;
-                break;
-        }
-
-        lastSent = Date.now();
-    });
+// Apply sync commands received from the side panel
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type !== 'SYNC_VIDEO') return;
+  const { action, time } = message.data;
+  switch (action) {
+    case 'play':
+      video.currentTime = time;
+      video.play();
+      break;
+    case 'pause':
+      video.pause();
+      video.currentTime = time;
+      break;
+    case 'seek':
+      video.currentTime = time;
+      break;
+  }
 });

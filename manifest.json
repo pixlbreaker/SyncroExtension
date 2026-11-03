@@ -1,11 +1,29 @@
 {
-    "manifest_version": 3,
-    "name": "YouTube Sync",
-    "version": "1.0",
-    "permissions": [
-        "storage"
-    ],
-    "action": {
-        "default_popup": "dist/popup.html"
+  "manifest_version": 3,
+  "name": "YouTube Syncro",
+  "version": "1.0",
+  "description": "Sync YouTube video playback with friends using PeerJS.",
+  "permissions": [
+    "sidePanel",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/watch?v=*"],
+      "js": ["src/peerjs.min.js", "src/content.js"]
     }
+  ],
+  "action": {
+    "default_title": "YouTube Syncro"
+  }
 }
